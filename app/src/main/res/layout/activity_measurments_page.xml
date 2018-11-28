@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:background="#fdf5e8 "
+    tools:context=".MesurementsPage">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:weightSum="2"
+        app:layout_constraintBottom_toTopOf="@+id/divider3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/fab_margin"
+            android:text="@string/measurement_title"
+            android:textColor="#172321"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="#FF5733"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/dynamicArcView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.494" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:foregroundGravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:background="#fdf3e3 "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/select_status"
+            android:textColor="#172321"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"/>
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="92dp"
+            android:layout_marginBottom="0dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:weightSum="4.3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <Button
+                android:id="@+id/ButtonSober"
+                style="@style/StatusButtonStyle"
+                android:text="@string/ButtonSober"
+                android:textColor="#fdf3e3"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="0.1" />
+
+            <Button
+                android:id="@+id/ButtonTipsy"
+                style="@style/StatusButtonStyle"
+                android:text="@string/ButtonTipsy"
+                android:textColor="#fdf3e3"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="0.1" />
+
+            <Button
+                android:id="@+id/ButtonDrunk"
+                style="@style/StatusButtonStyle"
+                android:text="@string/ButtonDrunk"
+                android:textColor="#fdf3e3"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="0.1" />
+
+
+            <Button
+                android:id="@+id/ButtonWasted"
+                style="@style/StatusButtonStyle"
+                android:text="@string/ButtonWasted"
+                android:textColor="#fdf3e3"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:weightSum="2.0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            app:layout_constraintVertical_bias="0.0">
+
+            <TextView
+                android:id="@+id/cancelTextView"
+                style="@android:style/Widget.Button"
+                android:layout_width="fill_parent"
+                android:layout_height="46dp"
+                android:layout_weight="1"
+                android:background="@drawable/text_button"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center"
+                android:text="@string/cancel"
+                android:textColor="@color/text_buttton"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/saveTextView"
+                style="@android:style/Widget.Button"
+                android:layout_width="fill_parent"
+                android:layout_height="46dp"
+                android:layout_weight="1"
+                android:background="@drawable/text_button"
+                android:gravity="center"
+                android:text="@string/save"
+                android:textColor="@color/text_buttton"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <com.hookedonplay.decoviewlib.DecoView xmlns:custom="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/dynamicArcView"
+        android:layout_width="219dp"
+        android:layout_height="219dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="104dp"
+        custom:dv_lineWidth="26dp"
+        custom:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        custom:layout_constraintEnd_toEndOf="parent"
+        custom:layout_constraintHorizontal_bias="0.503"
+        custom:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textPercentage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toBottomOf="@+id/dynamicArcView"
+        app:layout_constraintEnd_toEndOf="@+id/dynamicArcView"
+        app:layout_constraintStart_toStartOf="@+id/dynamicArcView"
+        app:layout_constraintTop_toTopOf="@+id/dynamicArcView" />
+
+
+</android.support.constraint.ConstraintLayout>
