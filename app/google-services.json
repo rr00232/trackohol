@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "300598794279",
+    "firebase_url": "https://esp-group-f.firebaseio.com",
+    "project_id": "esp-group-f",
+    "storage_bucket": "esp-group-f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:300598794279:android:7b17491175d49c9a",
+        "android_client_info": {
+          "package_name": "com.example.rizvanr.eps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "300598794279-2m1m9p33ut6h09h37cs6jekv8ln8r0fp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBd4-EOba5W5zqQnb6tk_SEoD3e-qylMG4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

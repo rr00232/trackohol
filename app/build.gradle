@@ -30,4 +30,7 @@ dependencies {
     implementation 'com.github.bmarrdev:android-DecoView-charting:v0.9.3'
     implementation 'br.com.simplepass:loading-button-android:1.7.2'
     implementation 'com.github.varunest:sparkbutton:1.0.6'
+    implementation 'com.google.firebase:firebase-core:16.0.1'
+    implementation 'com.google.firebase:firebase-database:16.0.1'
 }
+apply plugin: 'com.google.gms.google-services'
