@@ -18,6 +18,10 @@
         <activity android:name=".MainActivity">
         </activity>
         <activity
+            android:name=".ShowData"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity
             android:name=".MeasuringPage"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".MesurementsPage" />

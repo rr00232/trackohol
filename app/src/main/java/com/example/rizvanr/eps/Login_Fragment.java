@@ -154,7 +154,7 @@ public class Login_Fragment extends Fragment implements OnClickListener {
             // Else do login and do your stuff
         else{
             Toast.makeText(getActivity(), "Do Login.", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(getActivity(), MeasuringPage.class);
+            Intent intent = new Intent(getActivity(), ShowData.class);
             getActivity().startActivity(intent);
         }
 

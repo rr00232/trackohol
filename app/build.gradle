@@ -32,5 +32,6 @@ dependencies {
     implementation 'com.github.varunest:sparkbutton:1.0.6'
     implementation 'com.google.firebase:firebase-core:16.0.1'
     implementation 'com.google.firebase:firebase-database:16.0.1'
+    implementation project(':GraphViewLib')
 }
 apply plugin: 'com.google.gms.google-services'
