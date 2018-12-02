@@ -19,7 +19,7 @@
         </activity>
         <activity
             android:name=".ShowData"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:theme="@style/Theme.AppCompat.Light">
         </activity>
         <activity
             android:name=".MeasuringPage"
