@@ -116,9 +116,12 @@ public class SignUp_Fragment extends Fragment implements OnClickListener {
             new CustomToast().Show_Toast(getActivity(), view,
                     "Please select Terms and Conditions.");
 
+//TODO SHOULD-HAVE else if to check email address dosen't already have an account use ""new CustomToast().Show_Toast(getActivity(), view, "You already have an account with that email address.");"" if they already exist in the DB
+
             // Else do signup or do your stuff
         else
-            Toast.makeText(getActivity(), "Do SignUp.", Toast.LENGTH_SHORT)
+            //TODO MUST-HAVE add all fields (user's name, email and password) to DB
+            Toast.makeText(getActivity(), "Thank you for signing up.", Toast.LENGTH_SHORT)
                     .show();
 
     }

@@ -2,14 +2,7 @@ package com.example.rizvanr.eps;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.example.rizvanr.eps.Utils;
-import com.example.rizvanr.eps.R;
-
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.content.res.XmlResourceParser;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -84,7 +77,7 @@ public class Login_Fragment extends Fragment implements OnClickListener {
                     public void onCheckedChanged(CompoundButton button,
                                                  boolean isChecked) {
 
-                        // If it is checkec then show password else hide
+                        // If it is checked then show password else hide
                         // password
                         if (isChecked) {
 
@@ -115,11 +108,13 @@ public class Login_Fragment extends Fragment implements OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.loginBtn:
+//                login button pressed
+//                check login data inputed by user is valid
                 checkValidation();
                 break;
             case R.id.createAccount:
-
-                // Replace signup frgament with animation
+                // create account button pressed
+                // Replace signup frgament with animation - go to sign-up page
                 fragmentManager
                         .beginTransaction()
                         .setCustomAnimations(R.anim.right_enter, R.anim.left_out)
@@ -147,13 +142,16 @@ public class Login_Fragment extends Fragment implements OnClickListener {
             new CustomToast().Show_Toast(getActivity(), view,
                     "Enter both credentials.");
         }
-        // Check if email id is valid or not
+        // Check if email id is valid or not by checking the format is <email_id>@<domain>.<domain_end> e.g foo@bar.com
         else if (!m.find())
             new CustomToast().Show_Toast(getActivity(), view,
                     "Your Email Id is Invalid.");
             // Else do login and do your stuff
+//        TODO MUST-HAVE: add else if here to check email can be found in database and password matches email address and email has been confirmed
         else{
-            Toast.makeText(getActivity(), "Do Login.", Toast.LENGTH_SHORT).show();
+//            all checks passed therefore login successful
+//        TODO NICE-TO-HAVE: in the toast below have the user's name eg "Welcome foo!"
+            Toast.makeText(getActivity(), "Login Successful.", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(getActivity(), ShowData.class);
             getActivity().startActivity(intent);
         }
