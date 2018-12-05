@@ -1,7 +1,9 @@
 package com.example.rizvanr.eps;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -15,7 +17,9 @@ import com.hookedonplay.decoviewlib.DecoView;
 import com.hookedonplay.decoviewlib.charts.SeriesItem;
 import com.hookedonplay.decoviewlib.events.DecoEvent;
 
+
 public class MesurementsPage extends Activity {
+
 
     @Override
     public void onBackPressed(){
@@ -23,6 +27,7 @@ public class MesurementsPage extends Activity {
     }
 
     public void alertWindowFunction(){
+
         final AlertDialog.Builder builder = new AlertDialog.Builder(MesurementsPage.this);
         builder.setCancelable(true);
 
@@ -32,6 +37,7 @@ public class MesurementsPage extends Activity {
         TextView saveButton = (TextView) mView.findViewById(R.id.saveTextView);
         builder.setView(mView);
         final AlertDialog alertDialog = builder.create();
+
         alertDialog.show();
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,12 +49,14 @@ public class MesurementsPage extends Activity {
         discardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                alertDialog.cancel();
                 finish();
             }
         });
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                alertDialog.cancel();
                 returnToMeasure();
             }
         });
