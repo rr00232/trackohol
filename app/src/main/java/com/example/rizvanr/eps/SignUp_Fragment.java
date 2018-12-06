@@ -1,15 +1,6 @@
 package com.example.rizvanr.eps;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.example.rizvanr.eps.MainActivity;
-import com.example.rizvanr.eps.Utils;
-import com.example.rizvanr.eps.R;
-
-import android.annotation.SuppressLint;
-import android.content.res.ColorStateList;
-import android.content.res.XmlResourceParser;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;

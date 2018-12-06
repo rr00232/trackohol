@@ -1,10 +1,4 @@
 package com.example.rizvanr.eps;
-
-import com.example.rizvanr.eps.Login_Fragment;
-import com.example.rizvanr.eps.Utils;
-import com.example.rizvanr.eps.R;
-
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -22,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
 // to be recreated (e.g., orientation change) so that you don't lose this prior information.
 // If no data was supplied, savedInstanceState is null.
 // you will get the Bundle null when activity get starts first time and it will get in use when activity orientation get changed
-// TODO check if the user has logged in already if so then go straight to ShowData activity look at Login_Fragmet intent to see how to go there so savedInstanceState != null not sure how this will be implemented remember to finish this activity
+// TODO SHOULD-HAVE check if the user has logged in already if so then go straight to ShowData activity look at Login_Fragmet intent to see how to go there so savedInstanceState != null not sure how this will be implemented remember to finish this activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         fragmentManager = getSupportFragmentManager();
