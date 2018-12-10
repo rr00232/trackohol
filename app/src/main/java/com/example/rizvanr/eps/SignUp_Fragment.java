@@ -12,6 +12,22 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+//Firebase
+import com.google.android.gms.tasks.OnCanceledListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class SignUp_Fragment extends Fragment implements OnClickListener {
     private static View view;
@@ -19,10 +35,20 @@ public class SignUp_Fragment extends Fragment implements OnClickListener {
     private static TextView login;
     private static Button signUpButton;
     private static CheckBox terms_conditions;
+    private FirebaseDatabase database;
+    private DatabaseReference users;
+    private FirebaseAuth mAuth;
 
     public SignUp_Fragment() {
+        mAuth = FirebaseAuth.getInstance();
+
 
     }
+
+
+
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -114,6 +140,9 @@ public class SignUp_Fragment extends Fragment implements OnClickListener {
             //TODO MUST-HAVE add all fields (user's name, email and password) to DB
             Toast.makeText(getActivity(), "Thank you for signing up.", Toast.LENGTH_SHORT)
                     .show();
+           mAuth.createUserWithEmailAndPassword(getEmailId, getPassword);
+
+
 
     }
 }

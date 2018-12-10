@@ -19,15 +19,18 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public class MainActivity extends AppCompatActivity {
     private static FragmentManager fragmentManager;
 
     // Firebase
-    FirebaseDatabase database;
-    DatabaseReference users;
+   // FirebaseDatabase database;
+  //  DatabaseReference users;
+  //  FirebaseAuth mAuth;
+
 
     EditText edtEmailid, edtPassword, edtUsername;
     Button btnSignUp, btnLogin;
@@ -45,15 +48,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         fragmentManager = getSupportFragmentManager();
 
+        //mAuth = FirebaseAuth.getInstance();
 
-        database = FirebaseDatabase.getInstance();
-        users = database.getReference("Users");
+     //   database = FirebaseDatabase.getInstance();
+      //  users = database.getReference("Users");
 
-        edtEmailid = (EditText) findViewById(R.id.userEmailId);
-        edtPassword =(EditText) findViewById(R.id.password);
-        edtUsername = (EditText) findViewById(R.id.fullName);
+      //  edtEmailid = (EditText) findViewById(R.id.userEmailId);
+       // edtPassword =(EditText) findViewById(R.id.password);
+       // edtUsername = (EditText) findViewById(R.id.fullName);
 
-        btnSignUp = (Button)  findViewById(R.id.signUpBtn);
+        //btnSignUp = (Button)  findViewById(R.id.signUpBtn);
 
        // btnSignUp.setOnClickListener(new View.OnClickListener(){
          //   @Override

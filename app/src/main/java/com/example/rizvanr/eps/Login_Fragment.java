@@ -23,6 +23,23 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+// Firebase
+import com.google.android.gms.tasks.OnCanceledListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 
 public class Login_Fragment extends Fragment implements OnClickListener {
     private static View view;
@@ -34,8 +51,10 @@ public class Login_Fragment extends Fragment implements OnClickListener {
     private static LinearLayout loginLayout;
     private static Animation shakeAnimation;
     private static FragmentManager fragmentManager;
+    private FirebaseAuth mAuth;
 
     public Login_Fragment() {
+        mAuth = FirebaseAuth.getInstance();
 
     }
 
@@ -156,7 +175,7 @@ public class Login_Fragment extends Fragment implements OnClickListener {
             getActivity().startActivity(intent);
         }
 
-
+        mAuth.createUserWithEmailAndPassword(getEmailId, getPassword);
 
     }
 }
