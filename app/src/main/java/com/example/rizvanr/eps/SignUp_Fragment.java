@@ -34,7 +34,7 @@ public class SignUp_Fragment extends Fragment implements OnClickListener {
     }
 
     // Initialize all views
-    private void initViews() {
+    public void initViews() {
         fullName = (EditText) view.findViewById(R.id.fullName);
         emailId = (EditText) view.findViewById(R.id.userEmailId);
         password = (EditText) view.findViewById(R.id.password);

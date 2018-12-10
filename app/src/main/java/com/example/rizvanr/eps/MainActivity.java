@@ -1,13 +1,37 @@
 package com.example.rizvanr.eps;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+
+
 
 public class MainActivity extends AppCompatActivity {
     private static FragmentManager fragmentManager;
+
+    // Firebase
+    FirebaseDatabase database;
+    DatabaseReference users;
+
+    EditText edtEmailid, edtPassword, edtUsername;
+    Button btnSignUp, btnLogin;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +44,35 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         fragmentManager = getSupportFragmentManager();
+
+
+        database = FirebaseDatabase.getInstance();
+        users = database.getReference("Users");
+
+        edtEmailid = (EditText) findViewById(R.id.userEmailId);
+        edtPassword =(EditText) findViewById(R.id.password);
+        edtUsername = (EditText) findViewById(R.id.fullName);
+
+        btnSignUp = (Button)  findViewById(R.id.signUpBtn);
+
+       // btnSignUp.setOnClickListener(new View.OnClickListener(){
+         //   @Override
+         //   public void onClick(View view){
+         //       if (v == )
+
+          //  }
+       // });
+
+        //btnLogin = (Button) findViewById(R.id.loginBtn);
+       // btnLogin.setOnClickListener(new View.OnClickListener(){
+        //  @Override
+        //  public void  onClick(View view){
+        //      Intent s = new Intent(getApplicationContext(), Login_Fragment.class);
+        //     startActivity(s);
+
+        //    }
+        //});
+
 
         // If savedinstnacestate is null then replace login fragment
         if (savedInstanceState == null) {
