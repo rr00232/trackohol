@@ -175,7 +175,7 @@ public class Login_Fragment extends Fragment implements OnClickListener {
             getActivity().startActivity(intent);
         }
 
-        mAuth.createUserWithEmailAndPassword(getEmailId, getPassword);
+       // mAuth.createUserWithEmailAndPassword(getEmailId, getPassword);
 
     }
 }
