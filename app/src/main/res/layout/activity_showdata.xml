@@ -15,52 +15,46 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/graph_guideline"
+        app:layout_constraintBottom_toTopOf="@+id/graph-date_guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="spread_inside" />
 
     <android.support.constraint.Guideline
-        android:id="@+id/graph_guideline"
+        android:id="@+id/graph-date_guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.39" />
 
     <android.support.constraint.Guideline
-        android:id="@+id/line_guideline1"
+        android:id="@+id/date-spinner_guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.43" />
+        app:layout_constraintGuide_percent="0.50" />
 
     <android.support.constraint.Guideline
-        android:id="@+id/line_guideline"
+        android:id="@+id/spinner-list_guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.52" />
+        app:layout_constraintGuide_percent="0.57" />
 
-    <android.support.constraint.Guideline
-        android:id="@+id/list_guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.55" />
 
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/list_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/spinner-list_guideline"
         tools:layout_editor_absoluteX="20dp">
 
     </ListView>
@@ -73,23 +67,59 @@
         android:layout_gravity="bottom"
         android:layout_marginRight="25dp"
         android:layout_marginBottom="25dp"
-        android:src="@drawable/orange"
         android:onClick="goToMeasure"
+        android:src="@drawable/orange"
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Spinner
         android:id="@+id/dropdown_times"
-        android:layout_width="120dp"
+        android:layout_width="150dp"
         android:layout_height="30dp"
         android:layout_marginTop="8dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="8dp"
-        android:text='test'
-        app:layout_constraintBottom_toBottomOf="@+id/line_guideline1"
+        app:layout_constraintBottom_toBottomOf="@+id/spinner-list_guideline"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/line_guideline" />
+        app:layout_constraintTop_toBottomOf="@+id/date-spinner_guideline" />
+
+    <TextView
+        android:id="@+id/timePeriod"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:textSize="25sp"
+        style="@style/Base.TextAppearance.AppCompat.Body1"
+        app:layout_constraintBottom_toBottomOf="@+id/date-spinner_guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/graph-date_guideline" />
+
+    <TextView
+        android:id="@+id/avgValue"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:textSize="17sp"
+        android:gravity="center"
+        style="@style/Base.TextAppearance.AppCompat.Body1"
+        app:layout_constraintBottom_toBottomOf="@+id/spinner-list_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/dropdown_times"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/date-spinner_guideline" />
 
 
 </android.support.constraint.ConstraintLayout>
