@@ -114,6 +114,14 @@
         android:text="@string/terms_conditions"
         android:textColor="@color/lightorange"
         android:textSize="14sp" />
+    <CheckBox
+        android:id="@+id/email_veriBtn"
+        android:text="Check to send email verification"
+        android:textColor="@color/lightorange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textSize="14sp" />
 
     <Button
         android:id="@+id/signUpBtn"

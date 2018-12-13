@@ -2,6 +2,7 @@ package com.example.rizvanr.eps;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,17 +13,46 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+//Firebase
+import com.google.android.gms.tasks.OnCanceledListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class SignUp_Fragment extends Fragment implements OnClickListener {
     private static View view;
     private static EditText fullName, emailId, password, confirmPassword;
     private static TextView login;
     private static Button signUpButton;
-    private static CheckBox terms_conditions;
+    private static CheckBox terms_conditions, check_send;
+    private FirebaseDatabase database;
+    private DatabaseReference users;
+    private FirebaseAuth mAuth;
 
     public SignUp_Fragment() {
 
+
+        mAuth = FirebaseAuth.getInstance();
+    // check_send = (CheckBox) view.findViewById(R.id.email_veriBtn);
+
     }
+
+
+
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,7 +64,7 @@ public class SignUp_Fragment extends Fragment implements OnClickListener {
     }
 
     // Initialize all views
-    private void initViews() {
+    public void initViews() {
         fullName = (EditText) view.findViewById(R.id.fullName);
         emailId = (EditText) view.findViewById(R.id.userEmailId);
         password = (EditText) view.findViewById(R.id.password);
@@ -115,5 +145,25 @@ public class SignUp_Fragment extends Fragment implements OnClickListener {
             Toast.makeText(getActivity(), "Thank you for signing up.", Toast.LENGTH_SHORT)
                     .show();
 
+         // email event
+       // check_send.setOnClickListener(new View.OnClickListener() {
+           // @Override
+        //    public void onClick(View view) {
+             //   check_send.setEnabled(false);
+
+                FirebaseUser user = mAuth.getCurrentUser();
+                user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                     //   check_send.setEnabled(true);
+                       // if (task.isSuccessful())
+                            Toast.makeText(SignUp_Fragment.this.getActivity(), "email veri sent" +mAuth.getInstance().getCurrentUser().getEmail(), Toast.LENGTH_SHORT).show();
+                       // else
+                          //  Toast.makeText(SignUp_Fragment.this.getActivity(), "fail to sent email", Toast.LENGTH_SHORT).show();
+                                                  }
+                                              });
+                                     //     }
+                                 //     });
+        mAuth.createUserWithEmailAndPassword(getEmailId, getPassword);
     }
 }
