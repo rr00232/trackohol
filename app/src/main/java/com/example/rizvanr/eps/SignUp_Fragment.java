@@ -35,8 +35,8 @@ public class SignUp_Fragment extends Fragment implements OnClickListener {
     private static View view;
     private static EditText fullName, emailId, password, confirmPassword;
     private static TextView login;
-    private static Button signUpButton;
-    private static CheckBox terms_conditions, check_send;
+    private static Button signUpButton, check_send;
+    private static CheckBox terms_conditions;
     private FirebaseDatabase database;
     private DatabaseReference users;
     private FirebaseAuth mAuth;
@@ -45,7 +45,7 @@ public class SignUp_Fragment extends Fragment implements OnClickListener {
 
 
         mAuth = FirebaseAuth.getInstance();
-    // check_send = (CheckBox) view.findViewById(R.id.email_veriBtn);
+    //
 
     }
 
@@ -72,6 +72,7 @@ public class SignUp_Fragment extends Fragment implements OnClickListener {
         signUpButton = (Button) view.findViewById(R.id.signUpBtn);
         login = (TextView) view.findViewById(R.id.already_user);
         terms_conditions = (CheckBox) view.findViewById(R.id.terms_conditions);
+        check_send = (Button) view.findViewById(R.id.email_veriBtn);
         
     }
 
