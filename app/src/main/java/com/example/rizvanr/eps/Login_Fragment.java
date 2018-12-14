@@ -4,6 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.InputType;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 // Firebase
 import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -147,35 +149,43 @@ public class Login_Fragment extends Fragment implements OnClickListener {
     // Check Validation before login
     private void checkValidation() {
         // Get email id and password
-        String getEmailId = emailid.getText().toString();
-        String getPassword = password.getText().toString();
+        final String getEmailId = emailid.getText().toString();
+        final String getPassword = password.getText().toString();
 
         // Check patter for email id
         Pattern p = Pattern.compile(Utils.regEx);
 
-        Matcher m = p.matcher(getEmailId);
-
-        // Check for both field is empty or not
-        if (getEmailId.equals("") || getEmailId.length() == 0 || getPassword.equals("") || getPassword.length() == 0) {
-            loginLayout.startAnimation(shakeAnimation);
-            new CustomToast().Show_Toast(getActivity(), view,
-                    "Enter both credentials.");
-        }
-        // Check if email id is valid or not by checking the format is <email_id>@<domain>.<domain_end> e.g foo@bar.com
-        else if (!m.find())
-            new CustomToast().Show_Toast(getActivity(), view,
-                    "Your Email Id is Invalid.");
-            // Else do login and do your stuff
+        final Matcher m = p.matcher(getEmailId);
+        mAuth.signInWithEmailAndPassword(getEmailId, getPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (!task.isSuccessful()) {
+                    // Check for both field is empty or not
+                    if (getEmailId.equals("") || getEmailId.length() == 0 || getPassword.equals("") || getPassword.length() == 0) {
+                        loginLayout.startAnimation(shakeAnimation);
+                        new CustomToast().Show_Toast(getActivity(), view,
+                                "Enter both credentials.");
+                    }
+                    // Check if email id is valid or not by checking the format is <email_id>@<domain>.<domain_end> e.g foo@bar.com
+                    else if (!m.find())
+                        new CustomToast().Show_Toast(getActivity(), view,
+                                "Your Email Id is Invalid.");
+                    else
+                        new CustomToast().Show_Toast(getActivity(), view,
+                                "Your email or password does not match");
+                    // Else do login and do your stuff
+                }
 //        TODO MUST-HAVE: add else if here to check email can be found in database and password matches email address and email has been confirmed
-        else{
+                  else {
 //            all checks passed therefore login successful
 //        TODO NICE-TO-HAVE: in the toast below have the user's name eg "Welcome foo!"
-            Toast.makeText(getActivity(), "Login Successful.", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(getActivity(), ShowData.class);
-            getActivity().startActivity(intent);
-        }
-
-       // mAuth.createUserWithEmailAndPassword(getEmailId, getPassword);
+                      Toast.makeText(getActivity(), "Login Successful.", Toast.LENGTH_SHORT).show();
+                      Intent intent = new Intent(getActivity(), ShowData.class);
+                      getActivity().startActivity(intent);
+                  }
+                  // mAuth.createUserWithEmailAndPassword(getEmailId, getPassword);
+              }
+        });
 
     }
 }
