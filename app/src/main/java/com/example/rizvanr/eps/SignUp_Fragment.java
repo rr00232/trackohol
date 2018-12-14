@@ -72,7 +72,7 @@ public class SignUp_Fragment extends Fragment implements OnClickListener {
         signUpButton = (Button) view.findViewById(R.id.signUpBtn);
         login = (TextView) view.findViewById(R.id.already_user);
         terms_conditions = (CheckBox) view.findViewById(R.id.terms_conditions);
-        check_send = (Button) view.findViewById(R.id.email_veriBtn);
+       // check_send = (Button) view.findViewById(R.id.email_veriBtn);
         
     }
 
@@ -102,7 +102,7 @@ public class SignUp_Fragment extends Fragment implements OnClickListener {
 
     // Check Validation Method
     private void checkValidation() {
-
+       final FirebaseUser user = mAuth.getCurrentUser();
         // Get all edittext texts
         String getFullName = fullName.getText().toString();
         String getEmailId = emailId.getText().toString();
@@ -137,11 +137,25 @@ public class SignUp_Fragment extends Fragment implements OnClickListener {
         else if (!terms_conditions.isChecked())
             new CustomToast().Show_Toast(getActivity(), view,
                     "Please select Terms and Conditions.");
+         else
+             if(!user.isEmailVerified())
+                user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        //   check_send.setEnabled(true);
+                        // if (task.isSuccessful())
+                        Toast.makeText(SignUp_Fragment.this.getActivity(), "email veri sent" + mAuth.getInstance().getCurrentUser().getEmail(), Toast.LENGTH_SHORT).show();
+                        // else
+                        //  Toast.makeText(SignUp_Fragment.this.getActivity(), "fail to sent email", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
+            //     }
+            //     });
 //TODO SHOULD-HAVE else if to check email address dosen't already have an account use ""new CustomToast().Show_Toast(getActivity(), view, "You already have an account with that email address.");"" if they already exist in the DB
 
             // Else do signup or do your stuff
-        else
+
             //TODO MUST-HAVE add all fields (user's name, email and password) to DB
             Toast.makeText(getActivity(), "Thank you for signing up.", Toast.LENGTH_SHORT)
                     .show();
@@ -152,19 +166,8 @@ public class SignUp_Fragment extends Fragment implements OnClickListener {
         //    public void onClick(View view) {
              //   check_send.setEnabled(false);
 
-                FirebaseUser user = mAuth.getCurrentUser();
-                user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                     //   check_send.setEnabled(true);
-                       // if (task.isSuccessful())
-                            Toast.makeText(SignUp_Fragment.this.getActivity(), "email veri sent" +mAuth.getInstance().getCurrentUser().getEmail(), Toast.LENGTH_SHORT).show();
-                       // else
-                          //  Toast.makeText(SignUp_Fragment.this.getActivity(), "fail to sent email", Toast.LENGTH_SHORT).show();
-                                                  }
-                                              });
-                                     //     }
-                                 //     });
+               // FirebaseUser user = mAuth.getCurrentUser();
+
         mAuth.createUserWithEmailAndPassword(getEmailId, getPassword);
     }
 }
