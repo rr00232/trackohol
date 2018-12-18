@@ -101,14 +101,21 @@
         android:text="@string/terms_conditions"
         android:textColor="@color/lightorange"
         android:textSize="14sp" />
-    <CheckBox
-        android:id="@+id/email_veriBtn"
-        android:text="Check to send email verification"
-        android:textColor="@color/lightorange"
-        android:layout_width="wrap_content"
+
+
+    <Button
+        android:id="@+id/verifyEmailBtn"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textSize="14sp" />
+        android:background="@drawable/background_login"
+        android:text="Verify Email"
+        android:textColor="#f16f7d"
+        android:textAllCaps="false"
+        android:padding="16dp"
+        android:clickable="true"
+        style="@style/Base.TextAppearance.AppCompat.Body1"
+        android:layout_marginTop="15dp"
+        android:textSize="18sp" />
 
     <Button
         android:id="@+id/signUpBtn"
