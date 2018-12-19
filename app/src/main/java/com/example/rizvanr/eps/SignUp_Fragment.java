@@ -163,21 +163,26 @@ public class SignUp_Fragment extends Fragment implements OnClickListener {
       //
     }
     private void sendEmail() {
-
-        mAuth.createUserWithEmailAndPassword(emailId.getText().toString(),
-                password.getText().toString());
-       final   FirebaseUser user = mAuth.getCurrentUser();
+        String getEmailId2 = emailId.getText().toString();
+        String getPassword2 = password.getText().toString();
+        if (getEmailId2.equals("") || getEmailId2.length() == 0
+             || getPassword2.equals("") || getPassword2.length() == 0   )
+            new CustomToast().Show_Toast(getActivity(), view,
+                    "All fields are required");
+        else {
+            mAuth.createUserWithEmailAndPassword(getEmailId2, getPassword2);
+            final FirebaseUser user = mAuth.getCurrentUser();
             user.sendEmailVerification()
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-               public void onComplete(@NonNull Task<Void> task) {
-                    //   check_send.setEnabled(true);
-                    // if (task.isSuccessful())
-                  Toast.makeText(SignUp_Fragment.this.getActivity(), "email veri sent" + user.getEmail(), Toast.LENGTH_SHORT).show();
-                    // else
-                    //  Toast.makeText(SignUp_Fragment.this.getActivity(), "fail to sent email", Toast.LENGTH_SHORT).show();
-                }
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            //   check_send.setEnabled(true);
+                            if (task.isSuccessful())
+                            Toast.makeText(SignUp_Fragment.this.getActivity(), "email verification sent to " + user.getEmail(), Toast.LENGTH_SHORT).show();
+                             else
+                             Toast.makeText(SignUp_Fragment.this.getActivity(), "fail to sent email", Toast.LENGTH_SHORT).show();
+                        }
                     });
-
+             }
     }
 }

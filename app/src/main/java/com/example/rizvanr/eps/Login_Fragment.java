@@ -149,43 +149,41 @@ public class Login_Fragment extends Fragment implements OnClickListener {
     // Check Validation before login
     private void checkValidation() {
         // Get email id and password
-        final String getEmailId = emailid.getText().toString();
-        final String getPassword = password.getText().toString();
+         String getEmailId = emailid.getText().toString();
+         String getPassword = password.getText().toString();
 
         // Check patter for email id
         Pattern p = Pattern.compile(Utils.regEx);
-
-        final Matcher m = p.matcher(getEmailId);
-        mAuth.signInWithEmailAndPassword(getEmailId, getPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (!task.isSuccessful()) {
-                    // Check for both field is empty or not
-                    if (getEmailId.equals("") || getEmailId.length() == 0 || getPassword.equals("") || getPassword.length() == 0) {
-                        loginLayout.startAnimation(shakeAnimation);
-                        new CustomToast().Show_Toast(getActivity(), view,
-                                "Enter both credentials.");
-                    }
-                    // Check if email id is valid or not by checking the format is <email_id>@<domain>.<domain_end> e.g foo@bar.com
-                    else if (!m.find())
-                        new CustomToast().Show_Toast(getActivity(), view,
-                                "Your Email Id is Invalid.");
-                    else
-                        new CustomToast().Show_Toast(getActivity(), view,
-                                "Your email or password does not match");
-                    // Else do login and do your stuff
-                }
+         Matcher m = p.matcher(getEmailId);
+         // Check for both field is empty or not
+        if (getEmailId.equals("") || getEmailId.length() == 0 || getPassword.equals("") || getPassword.length() == 0) {
+            loginLayout.startAnimation(shakeAnimation);
+            new CustomToast().Show_Toast(getActivity(), view,
+                    "Enter both credentials.");
+        }
+               else {
+            mAuth.signInWithEmailAndPassword(getEmailId, getPassword);
+            // Check if email id is valid or not by checking the format is <email_id>@<domain>.<domain_end> e.g foo@bar.com
+            if (!m.find())
+                new CustomToast().Show_Toast(getActivity(), view,
+                        "Your Email Id is Invalid.");
+            else if (!getEmailId.equals(mAuth.getInstance().getCurrentUser().getEmail()))
+                new CustomToast().Show_Toast(getActivity(), view,
+                        "Your email or password does not match");
+            // Else do login and do your stuffel
+                 else if (!mAuth.getCurrentUser().isEmailVerified())
+                     new CustomToast().Show_Toast(getActivity(),view,
+                             "Please verify your email");
 //        TODO MUST-HAVE: add else if here to check email can be found in database and password matches email address and email has been confirmed
-                  else {
+           else {
 //            all checks passed therefore login successful
 //        TODO NICE-TO-HAVE: in the toast below have the user's name eg "Welcome foo!"
-                      Toast.makeText(getActivity(), "Login Successful.", Toast.LENGTH_SHORT).show();
-                      Intent intent = new Intent(getActivity(), ShowData.class);
-                      getActivity().startActivity(intent);
-                  }
+                Toast.makeText(getActivity(), "Login Successful.", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), ShowData.class);
+                getActivity().startActivity(intent);
+                 }
+            }
                   // mAuth.createUserWithEmailAndPassword(getEmailId, getPassword);
-              }
-        });
+        }
 
-    }
-}
+   }
