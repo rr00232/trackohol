@@ -4,6 +4,7 @@ import java.util.regex.Pattern;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,6 +19,7 @@ import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -45,13 +47,7 @@ public class SignUp_Fragment extends Fragment implements OnClickListener {
         mAuth = FirebaseAuth.getInstance();
 
 
-
     }
-
-
-
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,6 +56,8 @@ public class SignUp_Fragment extends Fragment implements OnClickListener {
         initViews();
         setListeners();
         return view;
+
+
     }
 
     // Initialize all views
@@ -71,9 +69,11 @@ public class SignUp_Fragment extends Fragment implements OnClickListener {
         signUpButton = (Button) view.findViewById(R.id.signUpBtn);
         login = (TextView) view.findViewById(R.id.already_user);
         terms_conditions = (CheckBox) view.findViewById(R.id.terms_conditions);
-        verifyEmailButton = (Button) view.findViewById(R.id.verifyEmailBtn);
-       // check_send = (Button) view.findViewById(R.id.email_veriBtn);
-        
+        // check_send = (Button) view.findViewById(R.id.email_veriBtn);
+       verifyEmailButton = (Button) view.findViewById(R.id.verifyEmailBtn);
+        verifyEmailButton.setEnabled(false);
+        verifyEmailButton.setVisibility(View.GONE);
+
     }
 
     // Set Listeners
@@ -88,12 +88,11 @@ public class SignUp_Fragment extends Fragment implements OnClickListener {
         switch (v.getId()) {
             case R.id.verifyEmailBtn:
                 sendEmail();
-                   break;
+                break;
 
             case R.id.signUpBtn:
-
                 // Call checkValidation method
-                checkValidation();
+                signUp();
                 break;
 
             case R.id.already_user:
@@ -106,8 +105,8 @@ public class SignUp_Fragment extends Fragment implements OnClickListener {
     }
 
     // Check Validation Method
-    private void checkValidation() {
-
+    private boolean checkValidation() {
+        boolean isValid = true;
         // Get all edittext texts
         String getFullName = fullName.getText().toString();
         String getEmailId = emailId.getText().toString();
@@ -117,72 +116,80 @@ public class SignUp_Fragment extends Fragment implements OnClickListener {
         // Pattern match for email id
         Pattern p = Pattern.compile(Utils.regEx);
         Matcher m = p.matcher(getEmailId);
-
         // Check if all strings are null or not
+
         if (getFullName.equals("") || getFullName.length() == 0
                 || getEmailId.equals("") || getEmailId.length() == 0
                 || getPassword.equals("") || getPassword.length() == 0
                 || getConfirmPassword.equals("")
-                || getConfirmPassword.length() == 0)
+                || getConfirmPassword.length() == 0) {
 
             new CustomToast().Show_Toast(getActivity(), view,
                     "All fields are required.");
+             isValid = false;
+        }
 
             // Check if email id valid or not
-        else if (!m.find())
+        else if (!m.find()) {
             new CustomToast().Show_Toast(getActivity(), view,
                     "Your Email Id is Invalid.");
-
+            isValid = false;
+        }
             // Check if both password should be equal
-        else if (!getConfirmPassword.equals(getPassword))
+        else if (!getConfirmPassword.equals(getPassword)) {
             new CustomToast().Show_Toast(getActivity(), view,
                     "Both password doesn't match.");
-
+             isValid = false;
+        }
             // Make sure user should check Terms and Conditions checkbox
-        else if (!terms_conditions.isChecked())
+        else if (!terms_conditions.isChecked()) {
             new CustomToast().Show_Toast(getActivity(), view,
                     "Please select Terms and Conditions.");
-         else
-
-//TODO SHOULD-HAVE else if to check email address dosen't already have an account use ""new CustomToast().Show_Toast(getActivity(), view, "You already have an account with that email address.");"" if they already exist in the DB
-
-            // Else do signup or do your stuff
-
-            //TODO MUST-HAVE add all fields (user's name, email and password) to DB
-            Toast.makeText(getActivity(), "Thank you for signing up.", Toast.LENGTH_SHORT)
-                    .show();
-
-         // email event
-       // check_send.setOnClickListener(new View.OnClickListener() {
-           // @Override
-        //    public void onClick(View view) {
-             //   check_send.setEnabled(false);
-
-               // FirebaseUser user = mAuth.getCurrentUser();
-
-      //
+             isValid = false;
+        }
+         return isValid;
     }
-    private void sendEmail() {
-        String getEmailId2 = emailId.getText().toString();
-        String getPassword2 = password.getText().toString();
-        if (getEmailId2.equals("") || getEmailId2.length() == 0
-             || getPassword2.equals("") || getPassword2.length() == 0   )
-            new CustomToast().Show_Toast(getActivity(), view,
-                    "All fields are required");
+
+    private void signUp() {
+        final String getEmailId3 = emailId.getText().toString();
+        final String getPassword3 = password.getText().toString();
+       if (!checkValidation()){
+           return;
+       }
+
         else {
-            mAuth.createUserWithEmailAndPassword(getEmailId2, getPassword2);
-            final FirebaseUser user = mAuth.getCurrentUser();
-            user.sendEmailVerification()
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+            mAuth.fetchSignInMethodsForEmail(getEmailId3)
+                    .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
                         @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            //   check_send.setEnabled(true);
-                            if (task.isSuccessful())
-                            Toast.makeText(SignUp_Fragment.this.getActivity(), "email verification sent to " + user.getEmail(), Toast.LENGTH_SHORT).show();
-                             else
-                             Toast.makeText(SignUp_Fragment.this.getActivity(), "fail to sent email", Toast.LENGTH_SHORT).show();
+                        public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+                            boolean check = task.getResult().getSignInMethods().isEmpty();
+                            if (!check)
+                                Toast.makeText(getActivity(), "email already in use", Toast.LENGTH_SHORT).show();
+                            else {
+                                mAuth.createUserWithEmailAndPassword(getEmailId3, getPassword3);
+                                Toast.makeText(getActivity(), "Thank you for signing up.", Toast.LENGTH_SHORT)
+                                        .show();
+                                verifyEmailButton.setEnabled(true);
+                                verifyEmailButton.setVisibility(View.VISIBLE);
+                            }
                         }
                     });
-             }
+        }
+    }
+    private void sendEmail () {
+        final FirebaseUser user = mAuth.getCurrentUser();
+        user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                //   check_send.setEnabled(true);
+                if (task.isSuccessful()) {
+                    Toast.makeText(SignUp_Fragment.this.getActivity(), "email verification sent to " + user.getEmail(), Toast.LENGTH_SHORT).show();
+                    verifyEmailButton.setEnabled(true);
+                }
+                else
+                    Toast.makeText(SignUp_Fragment.this.getActivity(), "fail to sent email", Toast.LENGTH_SHORT).show();
+                Log.d("abcccc", user.getEmail());
+            }
+        });
     }
 }

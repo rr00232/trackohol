@@ -117,31 +117,31 @@
 
 
     <Button
-        android:id="@+id/verifyEmailBtn"
+        android:id="@+id/signUpBtn"
+        style="@style/Base.TextAppearance.AppCompat.Body1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/background_login"
-        android:text="Verify Email"
-        android:textColor="#f16f7d"
-        android:textAllCaps="false"
-        android:padding="16dp"
-        android:clickable="true"
-        style="@style/Base.TextAppearance.AppCompat.Body1"
         android:layout_marginTop="15dp"
+        android:background="@drawable/background_login"
+        android:clickable="true"
+        android:padding="16dp"
+        android:text="@string/signUp"
+        android:textAllCaps="false"
+        android:textColor="#f16f7d"
         android:textSize="18sp" />
 
     <Button
-        android:id="@+id/signUpBtn"
+        android:id="@+id/verifyEmailBtn"
+        style="@style/Base.TextAppearance.AppCompat.Body1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/background_login"
-        android:text="@string/signUp"
-        android:textColor="#f16f7d"
-        android:textAllCaps="false"
-        android:padding="16dp"
-        android:clickable="true"
-        style="@style/Base.TextAppearance.AppCompat.Body1"
         android:layout_marginTop="15dp"
+        android:background="@drawable/background_login"
+        android:clickable="true"
+        android:padding="16dp"
+        android:text="Verify Email"
+        android:textAllCaps="false"
+        android:textColor="#f16f7d"
         android:textSize="18sp" />
 
     <TextView

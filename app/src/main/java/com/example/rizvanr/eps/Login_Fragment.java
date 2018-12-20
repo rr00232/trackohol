@@ -131,7 +131,7 @@ public class Login_Fragment extends Fragment implements OnClickListener {
             case R.id.loginBtn:
 //                login button pressed
 //                check login data inputed by user is valid
-                checkValidation();
+                logIn();
                 break;
             case R.id.createAccount:
                 // create account button pressed
@@ -147,7 +147,8 @@ public class Login_Fragment extends Fragment implements OnClickListener {
     }
 
     // Check Validation before login
-    private void checkValidation() {
+    private boolean checkValidation() {
+      boolean isValid = true;
         // Get email id and password
          String getEmailId = emailid.getText().toString();
          String getPassword = password.getText().toString();
@@ -160,30 +161,62 @@ public class Login_Fragment extends Fragment implements OnClickListener {
             loginLayout.startAnimation(shakeAnimation);
             new CustomToast().Show_Toast(getActivity(), view,
                     "Enter both credentials.");
+            isValid = false;
         }
-               else {
-            mAuth.signInWithEmailAndPassword(getEmailId, getPassword);
+          //  mAuth.signInWithEmailAndPassword(getEmailId, getPassword);
             // Check if email id is valid or not by checking the format is <email_id>@<domain>.<domain_end> e.g foo@bar.com
-            if (!m.find())
-                new CustomToast().Show_Toast(getActivity(), view,
-                        "Your Email Id is Invalid.");
-            else if (!getEmailId.equals(mAuth.getInstance().getCurrentUser().getEmail()))
-                new CustomToast().Show_Toast(getActivity(), view,
-                        "Your email or password does not match");
+         else   if (!m.find()) {
+            new CustomToast().Show_Toast(getActivity(), view,
+                    "Your Email Id is Invalid.");
+             isValid = false;
+        }
+          //  else if (!getEmailId.equals(mAuth.getInstance().getCurrentUser().getEmail())) {
+         //   new CustomToast().Show_Toast(getActivity(), view,
+         //           "Your email or password does not match");
+         //   isValid = false;
+       // }
             // Else do login and do your stuffel
-                 else if (!mAuth.getCurrentUser().isEmailVerified())
-                     new CustomToast().Show_Toast(getActivity(),view,
-                             "Please verify your email");
+            //     else if (!mAuth.getCurrentUser().isEmailVerified()) {
+          //  new CustomToast().Show_Toast(getActivity(), view,
+          //          "Please verify your email");
+         //   isValid = false;
+       // }
 //        TODO MUST-HAVE: add else if here to check email can be found in database and password matches email address and email has been confirmed
-           else {
+          // else {
 //            all checks passed therefore login successful
 //        TODO NICE-TO-HAVE: in the toast below have the user's name eg "Welcome foo!"
-                Toast.makeText(getActivity(), "Login Successful.", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getActivity(), ShowData.class);
-                getActivity().startActivity(intent);
-                 }
-            }
+          //      Toast.makeText(getActivity(), "Login Successful.", Toast.LENGTH_SHORT).show();
+           //     Intent intent = new Intent(getActivity(), ShowData.class);
+           //     getActivity().startActivity(intent);
+             //    }
+                     return isValid;
                   // mAuth.createUserWithEmailAndPassword(getEmailId, getPassword);
         }
-
+       private void logIn() {
+           if (!checkValidation()) {
+               return;
+           } else {
+               final String getEmailId2 = emailid.getText().toString();
+               final String getPassword2 = password.getText().toString();
+               mAuth.signInWithEmailAndPassword(getEmailId2, getPassword2)
+                       .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                           @Override
+                           public void onComplete(@NonNull Task<AuthResult> task) {
+                               if (!getEmailId2.equals(mAuth.getInstance().getCurrentUser().getEmail())){
+                                   new CustomToast().Show_Toast(getActivity(), view,
+                                           "Your email or password does not match");
+                               }
+                              else if (!mAuth.getCurrentUser().isEmailVerified()){
+                                   new CustomToast().Show_Toast(getActivity(), view,
+                                                 "Please verify your email");
+                               }
+                               else{
+                                   Toast.makeText(getActivity(), "Login Successful.", Toast.LENGTH_SHORT).show();
+                                      Intent intent = new Intent(getActivity(), ShowData.class);
+                                      getActivity().startActivity(intent);
+                               }
+                           }
+                       });
+           }
+       }
    }
