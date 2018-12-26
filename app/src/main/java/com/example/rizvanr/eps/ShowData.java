@@ -2,6 +2,7 @@ package com.example.rizvanr.eps;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -34,7 +35,26 @@ public class ShowData extends AppCompatActivity implements AdapterView.OnItemSel
     ListView listView;
     DB_Data db_data = new DB_Data();
 
-    public void applyGraphOptions(BarGraphSeries<DataPoint> series, GraphView graph) {
+    public class childDataPoint extends DataPoint{
+
+        public Integer childX;
+        public Double childY;
+        public Double getChildX;
+        public childDataPoint(double x, double y) {
+            super(x, y);
+            this.getChildX= x;
+            this.childX = getChildX.intValue();
+            this.childY=y;
+        }
+
+        public String toString() {
+            super.toString();
+            return "time: "+childX/60+":"+childX%60+" - value: "+childY+"";
+        }
+
+    }
+
+    public void applyGraphOptions(BarGraphSeries<childDataPoint> series, GraphView graph) {
 
         /*graph.getViewport().setXAxisBoundsManual(true);
         graph.getViewport().setMinX(1260);
@@ -45,9 +65,9 @@ public class ShowData extends AppCompatActivity implements AdapterView.OnItemSel
         series.setSpacing(20);
         series.setDrawValuesOnTop(true);
         series.setValuesOnTopColor(Color.DKGRAY);
-        series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
+        series.setValueDependentColor(new ValueDependentColor<childDataPoint>() {
             @Override
-            public int get(DataPoint data) {
+            public int get(childDataPoint data) {
                 if (data.getY() < 300)
                     return Color.rgb(0, 155, 0);  //green
                 else if ((data.getY() >= 300) && (data.getY() < 500))
@@ -69,17 +89,17 @@ public class ShowData extends AppCompatActivity implements AdapterView.OnItemSel
         startActivity(intent);
     }
 
-    //TODO: get value from Spinner to display the right time period
-    public void getSpinner(){
+    public String getSpinner(){
         Spinner spinner = findViewById(R.id.dropdown_times);
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.time_periods, android.R.layout.simple_spinner_item);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerAdapter);
         spinner.setOnItemSelectedListener(this);
+        return spinner.getSelectedItem().toString(); // returns time period chosen from the spinner
     }
-    public void showAvgValue(){
+    public void showAvgValue(String value){
         TextView textView = findViewById(R.id.avgValue);
-        textView.setText("average value: <TODO>");
+        textView.setText("average value: "+value+"");
     }
     public void showTimePeriod(){
         TextView textView = findViewById(R.id.timePeriod);
@@ -124,26 +144,31 @@ public class ShowData extends AppCompatActivity implements AdapterView.OnItemSel
         ArrayList<String> fakeData = new ArrayList<String>();
         importData(fakeData);
 
-        // show UI elements
-        getSpinner();
-        showAvgValue();
-        showTimePeriod();
+        //TODO: get value from Spinner to display the right time period
+        String spinnerSetting = getSpinner();
 
         listView=(ListView)findViewById(R.id.list);
-        ArrayList<DataPoint> arrayList = new ArrayList<>();
+        ArrayList<childDataPoint> arrayList = new ArrayList<>();
+        double avgValue = 0;
         for (int i = 0; i < db_data.numElements; i++){
-            arrayList.add(new DataPoint(db_data.scalableTime.get(i), db_data.alcoLevel.get(i)));
+            arrayList.add(new childDataPoint(db_data.scalableTime.get(i), db_data.alcoLevel.get(i)));
+            avgValue += (db_data.alcoLevel.get(i)/db_data.numElements);
         }
+
+        String stringValue = String.format("%.2f",avgValue);
+        showAvgValue(stringValue);
+        //TODO: get time period from spinner+data combo
+        showTimePeriod();
 
         int arrayLength = arrayList.size();
         ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayList);
         listView.setAdapter(arrayAdapter);
 
-        // TO DO: display real time and not scalable time
+        // TODO: display real time and not scalable time
         GraphView graph = (GraphView) findViewById(R.id.graph);
-        BarGraphSeries<DataPoint> series = new BarGraphSeries<>();
+        BarGraphSeries<childDataPoint> series = new BarGraphSeries<>();
         for (int i = 0; i < arrayLength; i++) {
-            DataPoint point = arrayList.get(i);
+            childDataPoint point = arrayList.get(i);
             series.appendData(point, true, arrayLength);
         }
         graph.addSeries(series);
@@ -162,12 +187,3 @@ public class ShowData extends AppCompatActivity implements AdapterView.OnItemSel
 
     }
 }
-
-/*      arrayList.add(new DataPoint(0,2));
-        arrayList.add(new DataPoint(1,12));
-        arrayList.add(new DataPoint(2,24));
-        arrayList.add(new DataPoint(3,22));
-        arrayList.add(new DataPoint(4,55));
-        arrayList.add(new DataPoint(5,71));
-        arrayList.add(new DataPoint(6,52));
-        arrayList.add(new DataPoint(7,10));*/
