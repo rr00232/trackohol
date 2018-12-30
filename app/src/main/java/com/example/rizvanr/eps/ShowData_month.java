@@ -13,7 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.content.Intent;
 import android.view.View;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +23,8 @@ import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -39,7 +40,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class ShowData extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+public class ShowData_month extends AppCompatActivity{
 
     private static TextView avgValue;
     private static TextView timePeriod;
@@ -51,8 +52,7 @@ public class ShowData extends AppCompatActivity implements AdapterView.OnItemSel
     List<Integer> fbValueList;
     List<Long> fbDateTimeList;
     static int fbLength;
-    Spinner mySpinner;
-    String spinnerValue;
+    int currentYear, currentDay, currentMonth;
 
     public class childDataPoint extends DataPoint{
 
@@ -73,11 +73,42 @@ public class ShowData extends AppCompatActivity implements AdapterView.OnItemSel
 
     }
 
+    public void applyGraphOptions(BarGraphSeries<childDataPoint> series, GraphView graph) {
+
+        /*graph.getViewport().setXAxisBoundsManual(true);
+        graph.getViewport().setMinX(1260);
+        graph.getViewport().setMaxX(1440);*/
+        //graph.getViewport().setYAxisBoundsManual(true);
+        //graph.getViewport().setMinY(0);
+        //graph.getViewport().setMaxY(100);
+        series.setSpacing(20);
+        series.setDrawValuesOnTop(true);
+        series.setValuesOnTopColor(Color.DKGRAY);
+        series.setValueDependentColor(new ValueDependentColor<childDataPoint>() {
+            @Override
+            public int get(childDataPoint data) {
+                if (data.getY() < 300)
+                    return Color.rgb(0, 155, 0);  //green
+                else if ((data.getY() >= 300) && (data.getY() < 500))
+                    return Color.rgb(255,210,0);  // yellow
+                else if (data.getY() >= 500 && data.getY() < 700 )
+                    return Color.rgb(255,150,0); // orange
+                else
+                    return Color.rgb(200,0,0);  //red
+            }
+        });
+        graph.getViewport().setScalable(true);
+        graph.getViewport().setScrollable(true);
+        graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE); // hide Y axis & grid lines
+        graph.getGridLabelRenderer().setGridColor(Color.DKGRAY);
+
+    }
     public void goToMeasure(View view){
         Intent intent = new Intent(this, MeasuringPage.class);
         startActivity(intent);
     }
 
+    // button intents
     public void goToDay(View view){
         Intent intent = new Intent(this, ShowData_day.class);
         startActivity(intent);
@@ -101,7 +132,20 @@ public class ShowData extends AppCompatActivity implements AdapterView.OnItemSel
     }
     public void showTimePeriod(){
         TextView textView = findViewById(R.id.timePeriod);
-        textView.setText("All data");
+
+        Calendar monthAgo = new GregorianCalendar();
+        monthAgo.add(Calendar.MONTH, -1);
+        int monthAgoMonth = monthAgo.get(Calendar.MONTH)+1;
+        int monthAgoDay = monthAgo.get(Calendar.DATE);
+
+        textView.setText(""+monthAgoDay+"/"+monthAgoMonth+" - "+currentDay+"/"+currentMonth+"");
+    }
+
+    public void getTime(){
+        Calendar cal = new GregorianCalendar();
+        currentYear = cal.get(Calendar.YEAR);
+        currentMonth = cal.get(Calendar.MONTH)+1;
+        currentDay = cal.get(Calendar.DAY_OF_MONTH);
     }
 
     // init ListView with data
@@ -114,10 +158,15 @@ public class ShowData extends AppCompatActivity implements AdapterView.OnItemSel
                 fbDataList.clear();
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     FirebaseData fbData = data.getValue(FirebaseData.class);
-                    fbDataList.add(fbData);
+                    getTime();
+                    int month = Integer.parseInt(fbData.getDate_time().substring(4,6));
+                    int day = Integer.parseInt(fbData.getDate_time().substring(6,8));
+                    int year = Integer.parseInt(fbData.getDate_time().substring(0,4));
+                    if ((currentMonth == month && currentYear == year) || (currentMonth == (month+1) && currentDay < day && currentYear == year) || (currentYear == (year+1) && month==12 && currentDay < day))
+                        fbDataList.add(fbData);
                 }
 
-                FirebaseDataList adapter = new FirebaseDataList(ShowData.this, fbDataList);
+                FirebaseDataList adapter = new FirebaseDataList(ShowData_month.this, fbDataList);
                 listView.setAdapter(adapter);
             }
             @Override
@@ -128,7 +177,7 @@ public class ShowData extends AppCompatActivity implements AdapterView.OnItemSel
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_showdata);
+        setContentView(R.layout.activity_showdata_month);
 
         // initialise database stuff
         databaseReference = FirebaseDatabase.getInstance().getReference("user1");
@@ -144,44 +193,46 @@ public class ShowData extends AppCompatActivity implements AdapterView.OnItemSel
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 //fbDataList.clear();
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    Integer fbValue = Integer.parseInt(data.getValue(FirebaseData.class).getLevel());
-                    fbValueList.add(fbValue);
-                    Long fbDateTime = Long.parseLong(data.getValue(FirebaseData.class).getDate_time());
-                    fbDateTimeList.add(fbDateTime);
+
+                    getTime();
+                    int month = Integer.parseInt(data.getValue(FirebaseData.class).getDate_time().substring(4,6));
+                    int day = Integer.parseInt(data.getValue(FirebaseData.class).getDate_time().substring(6,8));
+                    int year = Integer.parseInt(data.getValue(FirebaseData.class).getDate_time().substring(0,4));
+                    if ((currentMonth == month && currentYear == year) || (currentMonth == (month+1) && currentDay < day && currentYear == year) || (currentYear == (year+1) && month==12 && currentDay < day)) {
+                        Integer fbValue = Integer.parseInt(data.getValue(FirebaseData.class).getLevel());
+                        fbValueList.add(fbValue);
+                        Long fbDateTime = Long.parseLong(data.getValue(FirebaseData.class).getDate_time());
+                        fbDateTimeList.add(fbDateTime);
+                    }
                 }
                 fbLength = fbValueList.size();
-                //FirebaseDataList adapter = new FirebaseDataList(ShowData.this, fbDataList);
-                //listView.setAdapter(adapter);
+
+                //TODO: process the data so that you can use it in the graph
 
                 ArrayList<childDataPoint> arrayList = new ArrayList<>();
                 double avgValue = 0;
                 for (int i = 0; i < fbLength; i++){
                     arrayList.add(new childDataPoint(fbDateTimeList.get(i), fbValueList.get(i)));
-                    avgValue += (fbValueList.get(i)/fbLength);
+                    avgValue += (double)(fbValueList.get(i)/fbLength);
                 }
 
                 String stringValue = String.format("%.2f",avgValue);
                 showAvgValue(stringValue);
-                //TODO: get time period from spinner+data combo
                 showTimePeriod();
+
+                GraphView graph = (GraphView) findViewById(R.id.graph);
+                BarGraphSeries<childDataPoint> series = new BarGraphSeries<>();
+                for (int i = 0; i < fbLength; i++) {
+                    childDataPoint point = arrayList.get(i);
+                    series.appendData(point, true, fbLength);
+                }
+                graph.addSeries(series);
+                applyGraphOptions(series, graph);
 
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
-
-    }
-
-    @Override
-    // int i = position;
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        String text = adapterView.getItemAtPosition(i).toString();
-        Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT).show();
-        spinnerValue = text;
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
 }

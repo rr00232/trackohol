@@ -26,6 +26,18 @@
             android:theme="@style/Theme.AppCompat.Light">
         </activity>
         <activity
+            android:name=".ShowData_day"
+            android:theme="@style/Theme.AppCompat.Light">
+        </activity>
+        <activity
+            android:name=".ShowData_week"
+            android:theme="@style/Theme.AppCompat.Light">
+        </activity>
+        <activity
+            android:name=".ShowData_month"
+            android:theme="@style/Theme.AppCompat.Light">
+        </activity>
+        <activity
             android:name=".MeasuringPage"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".MesurementsPage" />
