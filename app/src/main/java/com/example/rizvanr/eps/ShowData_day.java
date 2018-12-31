@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.ValueDependentColor;
@@ -52,7 +53,7 @@ public class ShowData_day extends AppCompatActivity{
     private FirebaseAuth mAuth;
     List<FirebaseData> fbDataList;
     List<Integer> fbValueList;
-    List<Long> fbDateTimeList;
+    List<Integer> fbDateTimeList;
     static int fbLength;
     int currentYear, currentDay, currentMonth, currentHour, currentMinute;
     Date currentTime;
@@ -88,7 +89,7 @@ public class ShowData_day extends AppCompatActivity{
         series.setSpacing(20);
         series.setDrawValuesOnTop(true);
         series.setValuesOnTopColor(Color.DKGRAY);
-        series.setValueDependentColor(new ValueDependentColor<childDataPoint>() {
+        /*series.setValueDependentColor(new ValueDependentColor<childDataPoint>() {
             @Override
             public int get(childDataPoint data) {
                 if (data.getY() < 300)
@@ -100,11 +101,25 @@ public class ShowData_day extends AppCompatActivity{
                 else
                     return Color.rgb(200,0,0);  //red
             }
-        });
+        });*/
+        series.setColor(Color.rgb(250,100,90)); // orange bars
         graph.getViewport().setScalable(true);
         graph.getViewport().setScrollable(true);
         graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE); // hide Y axis & grid lines
         graph.getGridLabelRenderer().setGridColor(Color.DKGRAY);
+
+        graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
+            @Override
+            public String formatLabel(double value, boolean isValueX) {
+                if (isValueX) {
+                    return super.formatLabel((int)(value/60), isValueX) + ":" + super.formatLabel(value%60, isValueX);
+                }
+                else {
+                    return super.formatLabel(value, isValueX);
+                }
+            }
+        });
+        graph.getGridLabelRenderer().setHumanRounding(false);
 
     }
     public void goToMeasure(View view){
@@ -212,8 +227,11 @@ public class ShowData_day extends AppCompatActivity{
                     if ((daysBetween(cal.getTime(), fbCal.getTime())==0) || (daysBetween(cal.getTime(),fbCal.getTime())==1 && currentHour<hour) || (daysBetween(cal.getTime(),fbCal.getTime())==1 && currentHour==hour && currentMinute<minute)){
                         Integer fbValue = Integer.parseInt(data.getValue(FirebaseData.class).getLevel());
                         fbValueList.add(fbValue);
-                        Long fbDateTime = Long.parseLong(data.getValue(FirebaseData.class).getDate_time());
-                        fbDateTimeList.add(fbDateTime);
+                        //Long fbDateTime = Long.parseLong(data.getValue(FirebaseData.class).getDate_time());
+                        String tempTime = data.getValue(FirebaseData.class).getDate_time();
+                        Integer time = Integer.parseInt(tempTime.substring(8,10))*60 + Integer.parseInt(tempTime.substring(10,12));
+                        //fbDateTimeList.add(fbDateTime);
+                        fbDateTimeList.add(time);
                     }
                 }
                 fbLength = fbValueList.size();
@@ -229,7 +247,6 @@ public class ShowData_day extends AppCompatActivity{
 
                 String stringValue = String.format("%.2f",avgValue);
                 showAvgValue(stringValue);
-                //TODO: get time period from spinner+data combo
                 showTimePeriod();
 
                 // TODO: display real time and not scalable time

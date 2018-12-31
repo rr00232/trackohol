@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.ValueDependentColor;
@@ -80,15 +81,13 @@ public class ShowData_week extends AppCompatActivity{
     public void applyGraphOptions(BarGraphSeries<childDataPoint> series, GraphView graph) {
 
         /*graph.getViewport().setXAxisBoundsManual(true);
-        graph.getViewport().setMinX(1260);
-        graph.getViewport().setMaxX(1440);*/
-        //graph.getViewport().setYAxisBoundsManual(true);
-        //graph.getViewport().setMinY(0);
-        //graph.getViewport().setMaxY(100);
-        series.setSpacing(20);
+        graph.getViewport().setMinX(min);
+        graph.getViewport().setMaxX(max); */
+        //series.setSpacing(20);
+        series.setColor(Color.rgb(250,100,90)); // orange bars
         series.setDrawValuesOnTop(true);
         series.setValuesOnTopColor(Color.DKGRAY);
-        series.setValueDependentColor(new ValueDependentColor<childDataPoint>() {
+        /*series.setValueDependentColor(new ValueDependentColor<childDataPoint>() {
             @Override
             public int get(childDataPoint data) {
                 if (data.getY() < 300)
@@ -100,11 +99,26 @@ public class ShowData_week extends AppCompatActivity{
                 else
                     return Color.rgb(200,0,0);  //red
             }
-        });
-        graph.getViewport().setScalable(true);
-        graph.getViewport().setScrollable(true);
+        });*/
+        //graph.getViewport().setScrollable(true);
         graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE); // hide Y axis & grid lines
         graph.getGridLabelRenderer().setGridColor(Color.DKGRAY);
+
+        graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
+            @Override
+            public String formatLabel(double value, boolean isValueX) {
+                if (isValueX) {
+                    String temp = String.format("%f", value);
+                    int valueMonth = Integer.parseInt(temp.substring(4,6));
+                    int valueDay = Integer.parseInt(temp.substring(6,8));
+                    return super.formatLabel(valueDay, isValueX) + "/" + super.formatLabel(valueMonth, isValueX);
+                }
+                else {
+                    return super.formatLabel(value, isValueX);
+                }
+            }
+        });
+        graph.getGridLabelRenderer().setHumanRounding(false);
 
     }
     public void goToMeasure(View view){
@@ -155,6 +169,28 @@ public class ShowData_week extends AppCompatActivity{
         currentDay = cal.get(Calendar.DAY_OF_MONTH);
         cal.set(currentYear, currentMonth-1, currentDay);
         currentTime = cal.getTime();
+    }
+
+    // TODO: fix this!!!
+    public List<Integer> getWeekdays(List<Integer> levels, List<Long> times, int length){
+        Calendar week = new GregorianCalendar();
+        List<Integer> weekDays = new ArrayList<>();
+        int hold;
+        for (int a = 0; a<7; a++) // init to zero
+            weekDays.add(0);
+        for (int i = 0; i < length; i++)
+        {
+            String temp = String.format("%d", times.get(i)).substring(6,8);
+            int tempInt = Integer.parseInt(temp);
+            if (week.get(Calendar.DAY_OF_MONTH) == tempInt){
+                hold = levels.get(i);
+                if (hold > weekDays.get(i))
+                    weekDays.set(i,hold);
+            }
+            else
+                week.add(Calendar.DAY_OF_MONTH, -1);
+        }
+        return weekDays;
     }
 
     // init ListView with data
@@ -214,13 +250,17 @@ public class ShowData_week extends AppCompatActivity{
                     if (daysBetween(cal.getTime(), fbCal.getTime()) < 7) {
                         Integer fbValue = Integer.parseInt(data.getValue(FirebaseData.class).getLevel());
                         fbValueList.add(fbValue);
-                        Long fbDateTime = Long.parseLong(data.getValue(FirebaseData.class).getDate_time());
-                        fbDateTimeList.add(fbDateTime);
+                        //Long fbDateTime = Long.parseLong(data.getValue(FirebaseData.class).getDate_time());
+                        //fbDateTimeList.add(fbDateTime);
+                        String tempTime = data.getValue(FirebaseData.class).getDate_time();
+                        Long time = Long.parseLong(tempTime.substring(0,8))*10000 + Long.parseLong(tempTime.substring(8,10))*60 + Long.parseLong(tempTime.substring(10,12));
+                        //fbDateTimeList.add(fbDateTime);
+                        fbDateTimeList.add(time);
+
                     }
                 }
                 fbLength = fbValueList.size();
-
-                //TODO: process the data so that you can use it in the graph
+                //List<Integer> fbWeekDays = getWeekdays(fbValueList, fbDateTimeList, fbLength);
 
                 ArrayList<childDataPoint> arrayList = new ArrayList<>();
                 double avgValue = 0;

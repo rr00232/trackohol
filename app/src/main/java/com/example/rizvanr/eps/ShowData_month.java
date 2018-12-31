@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.ValueDependentColor;
@@ -45,7 +46,6 @@ public class ShowData_month extends AppCompatActivity{
     private static TextView avgValue;
     private static TextView timePeriod;
     ListView listView;
-    DB_Data db_data = new DB_Data();
     DatabaseReference databaseReference;
     private FirebaseAuth mAuth;
     List<FirebaseData> fbDataList;
@@ -101,6 +101,22 @@ public class ShowData_month extends AppCompatActivity{
         graph.getViewport().setScrollable(true);
         graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE); // hide Y axis & grid lines
         graph.getGridLabelRenderer().setGridColor(Color.DKGRAY);
+
+        graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
+            @Override
+            public String formatLabel(double value, boolean isValueX) {
+                if (isValueX) {
+                    String temp = String.format("%f", value);
+                    int valueMonth = Integer.parseInt(temp.substring(4,6));
+                    int valueDay = Integer.parseInt(temp.substring(6,8));
+                    return super.formatLabel(valueDay, isValueX) + "/" + super.formatLabel(valueMonth, isValueX);
+                }
+                else {
+                    return super.formatLabel(value, isValueX);
+                }
+            }
+        });
+        graph.getGridLabelRenderer().setHumanRounding(false);
 
     }
     public void goToMeasure(View view){
