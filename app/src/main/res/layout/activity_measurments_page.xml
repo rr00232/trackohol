@@ -20,7 +20,7 @@
         <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="49dp"
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/fab_margin"
@@ -56,67 +56,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/select_status"
-            android:textColor="#172321"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"/>
-
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="92dp"
-            android:layout_marginBottom="0dp"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:weightSum="4.3"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <Button
-                android:id="@+id/ButtonSober"
-                style="@style/StatusButtonStyle"
-                android:text="@string/ButtonSober"
-                android:textColor="#fdf3e3"/>
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="0.1" />
-
-            <Button
-                android:id="@+id/ButtonTipsy"
-                style="@style/StatusButtonStyle"
-                android:text="@string/ButtonTipsy"
-                android:textColor="#fdf3e3"/>
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="0.1" />
-
-            <Button
-                android:id="@+id/ButtonDrunk"
-                style="@style/StatusButtonStyle"
-                android:text="@string/ButtonDrunk"
-                android:textColor="#fdf3e3"/>
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="0.1" />
-
-
-            <Button
-                android:id="@+id/ButtonWasted"
-                style="@style/StatusButtonStyle"
-                android:text="@string/ButtonWasted"
-                android:textColor="#fdf3e3"/>
-
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -161,8 +100,8 @@
 
     <com.hookedonplay.decoviewlib.DecoView xmlns:custom="http://schemas.android.com/apk/res-auto"
         android:id="@+id/dynamicArcView"
-        android:layout_width="219dp"
-        android:layout_height="219dp"
+        android:layout_width="282dp"
+        android:layout_height="346dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
@@ -178,7 +117,7 @@
         android:id="@+id/textPercentage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="36sp"
+        android:textSize="42sp"
         app:layout_constraintBottom_toBottomOf="@+id/dynamicArcView"
         app:layout_constraintEnd_toEndOf="@+id/dynamicArcView"
         app:layout_constraintStart_toStartOf="@+id/dynamicArcView"
