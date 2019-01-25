@@ -8,12 +8,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.os.Vibrator;
+
+
 
 public class CustomToast {
 
     // Custom Toast Method
+
     public void Show_Toast(Context context, View view, String error) {
 
+        Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        // To repeat the pattern from any other point, you could increase the index, e.g. '1'
+        v.vibrate(100);
         // Layout Inflater for inflating custom view
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
