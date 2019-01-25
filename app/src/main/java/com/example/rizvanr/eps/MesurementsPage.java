@@ -69,10 +69,6 @@ public class MesurementsPage extends Activity {
 
         final TextView cancelTextView = findViewById(R.id.cancelTextView);
         final TextView saveTextView = findViewById(R.id.saveTextView);
-        final Button buttonSober = findViewById(R.id.ButtonSober);
-        final Button buttonDrunk = findViewById(R.id.ButtonDrunk);
-        final Button buttonTipsy = findViewById(R.id.ButtonTipsy);
-        final Button buttonWasted = findViewById(R.id.ButtonWasted);
         final DecoView decoView = findViewById(R.id.dynamicArcView);
 
         final SeriesItem backseriesItem = new SeriesItem.Builder(Color.parseColor("#cac1b2"))
@@ -118,28 +114,6 @@ public class MesurementsPage extends Activity {
                 .setDuration(3000L)
                 .setEffectRotations(3)
                 .build());
-
-        buttonSober.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        buttonDrunk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
-        buttonTipsy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
-        buttonWasted.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
 
         cancelTextView.setOnClickListener(new View.OnClickListener() {
             @Override
