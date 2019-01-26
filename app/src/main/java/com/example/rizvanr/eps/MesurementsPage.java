@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.view.animation.BounceInterpolator;
+import android.widget.Toast;
+
 import com.hookedonplay.decoviewlib.DecoView;
 import com.hookedonplay.decoviewlib.charts.SeriesItem;
 import com.hookedonplay.decoviewlib.events.DecoEvent;
@@ -54,7 +56,7 @@ public class MesurementsPage extends Activity {
             @Override
             public void onClick(View v) {
                 alertDialog.cancel();
-                returnToMeasure();
+                returnToMainPage();
             }
         });
     }
@@ -86,11 +88,23 @@ public class MesurementsPage extends Activity {
         final int series1Index = decoView.addSeries(dataseriesItem);
 
         final TextView textPercentage = (TextView) findViewById(R.id.textPercentage);
+        decoView.addEvent(new DecoEvent.Builder(50)
+                .setIndex(backIndex)
+                .setDuration(1500)
+                .build());
+        float measuredAlcoholLevelMgL = getIntent().getIntExtra("ALCOHOL_LEVEL_KEY", 0);
+        Toast.makeText(MesurementsPage.this, "LEVEL: " + String.valueOf(measuredAlcoholLevelMgL), Toast.LENGTH_SHORT).show();
+
+        float measuredAlcoholLevel = measuredAlcoholLevelMgL  / 2;
+        Log.d("DISPLAY", "DATA RECEIVED: " + Float.toString(measuredAlcoholLevelMgL));
+        Toast.makeText(MesurementsPage.this, "LEVEL PERCENT: " + String.valueOf(measuredAlcoholLevel), Toast.LENGTH_SHORT).show();
+
         dataseriesItem.addArcSeriesItemListener(new SeriesItem.SeriesItemListener() {
             @Override
             public void onSeriesItemAnimationProgress(float percentComplete, float currentPosition) {
                 float percentFilled = ((currentPosition - dataseriesItem.getMinValue()) / (dataseriesItem.getMaxValue() - dataseriesItem.getMinValue()));
-                textPercentage.setText(String.format("%.0f%%", percentFilled * 100f));
+
+                textPercentage.setText(String.format("%d mg/L", measuredAlcoholLevelMgL));
             }
 
             @Override
@@ -98,15 +112,6 @@ public class MesurementsPage extends Activity {
 
             }
         });
-
-
-
-        decoView.addEvent(new DecoEvent.Builder(50)
-                .setIndex(backIndex)
-                .setDuration(1500)
-                .build());
-
-        int measuredAlcoholLevel = getIntent().getIntExtra("ALCOHOL_LEVEL_KEY", 0) / 2;
 
         decoView.addEvent(new DecoEvent.Builder(measuredAlcoholLevel)
                 .setIndex(series1Index)
@@ -137,8 +142,8 @@ public class MesurementsPage extends Activity {
     }
 
 
-    public void returnToMeasure(){
-        Intent intent = new Intent(this, MeasuringPage.class);
+    public void returnToMainPage(){
+        Intent intent = new Intent(this, ShowData.class);
         finish();
         startActivity(intent);
 
