@@ -49,7 +49,7 @@ public class ShowData_month extends AppCompatActivity{
     DatabaseReference databaseReference;
     private FirebaseAuth mAuth;
     List<FirebaseData> fbDataList;
-    List<Integer> fbValueList;
+    List<Double> fbValueList;
     List<Long> fbDateTimeList;
     static int fbLength;
     int currentYear, currentDay, currentMonth;
@@ -84,7 +84,7 @@ public class ShowData_month extends AppCompatActivity{
         series.setSpacing(20);
         series.setDrawValuesOnTop(true);
         series.setValuesOnTopColor(Color.DKGRAY);
-        series.setValueDependentColor(new ValueDependentColor<childDataPoint>() {
+        /*series.setValueDependentColor(new ValueDependentColor<childDataPoint>() {
             @Override
             public int get(childDataPoint data) {
                 if (data.getY() < 300)
@@ -96,11 +96,14 @@ public class ShowData_month extends AppCompatActivity{
                 else
                     return Color.rgb(200,0,0);  //red
             }
-        });
+        }); */
+        series.setColor(Color.rgb(250,100,90));
         graph.getViewport().setScalable(true);
         graph.getViewport().setScrollable(true);
         graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE); // hide Y axis & grid lines
         graph.getGridLabelRenderer().setGridColor(Color.DKGRAY);
+
+        graph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
 
         graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
             @Override
@@ -215,7 +218,7 @@ public class ShowData_month extends AppCompatActivity{
                     int day = Integer.parseInt(data.getValue(FirebaseData.class).getDate_time().substring(6,8));
                     int year = Integer.parseInt(data.getValue(FirebaseData.class).getDate_time().substring(0,4));
                     if ((currentMonth == month && currentYear == year) || (currentMonth == (month+1) && currentDay < day && currentYear == year) || (currentYear == (year+1) && month==12 && currentDay < day)) {
-                        Integer fbValue = Integer.parseInt(data.getValue(FirebaseData.class).getLevel());
+                        Double fbValue = Double.parseDouble(data.getValue(FirebaseData.class).getLevel());
                         fbValueList.add(fbValue);
                         Long fbDateTime = Long.parseLong(data.getValue(FirebaseData.class).getDate_time());
                         fbDateTimeList.add(fbDateTime);
@@ -229,7 +232,7 @@ public class ShowData_month extends AppCompatActivity{
                 double avgValue = 0;
                 for (int i = 0; i < fbLength; i++){
                     arrayList.add(new childDataPoint(fbDateTimeList.get(i), fbValueList.get(i)));
-                    avgValue += (double)(fbValueList.get(i)/fbLength);
+                    avgValue += (fbValueList.get(i)/(double)fbLength);
                 }
 
                 String stringValue = String.format("%.2f",avgValue);

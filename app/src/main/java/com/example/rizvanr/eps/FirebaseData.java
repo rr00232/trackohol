@@ -3,12 +3,12 @@ package com.example.rizvanr.eps;
 public class FirebaseData {
 
     Long date_time;
-    Long level;
+    Double level;
     String tag;
 
     public FirebaseData(){}
 
-    public FirebaseData(Long date_time, Long level, String tag) {
+    public FirebaseData(Long date_time, Double level, String tag) {
         this.date_time = date_time;
         this.level = level;
         this.tag = tag;
@@ -19,7 +19,7 @@ public class FirebaseData {
     }
 
     public String getLevel() {
-        return String.format("%3d",level);
+        return Double.toString(level);
     }
 
     public String getTag() {

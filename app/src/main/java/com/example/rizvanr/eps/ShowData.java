@@ -44,11 +44,10 @@ public class ShowData extends AppCompatActivity implements AdapterView.OnItemSel
     private static TextView avgValue;
     private static TextView timePeriod;
     ListView listView;
-    DB_Data db_data = new DB_Data();
     DatabaseReference databaseReference;
     private FirebaseAuth mAuth;
     List<FirebaseData> fbDataList;
-    List<Integer> fbValueList;
+    List<Double> fbValueList;
     List<Long> fbDateTimeList;
     static int fbLength;
     Spinner mySpinner;
@@ -144,7 +143,7 @@ public class ShowData extends AppCompatActivity implements AdapterView.OnItemSel
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 //fbDataList.clear();
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    Integer fbValue = Integer.parseInt(data.getValue(FirebaseData.class).getLevel());
+                    Double fbValue = Double.parseDouble(data.getValue(FirebaseData.class).getLevel());
                     fbValueList.add(fbValue);
                     Long fbDateTime = Long.parseLong(data.getValue(FirebaseData.class).getDate_time());
                     fbDateTimeList.add(fbDateTime);
@@ -157,7 +156,7 @@ public class ShowData extends AppCompatActivity implements AdapterView.OnItemSel
                 double avgValue = 0;
                 for (int i = 0; i < fbLength; i++){
                     arrayList.add(new childDataPoint(fbDateTimeList.get(i), fbValueList.get(i)));
-                    avgValue += (fbValueList.get(i)/fbLength);
+                    avgValue += (fbValueList.get(i)/(double)fbLength);
                 }
 
                 String stringValue = String.format("%.2f",avgValue);

@@ -48,11 +48,10 @@ public class ShowData_day extends AppCompatActivity{
     private static TextView avgValue;
     private static TextView timePeriod;
     ListView listView;
-    DB_Data db_data = new DB_Data();
     DatabaseReference databaseReference;
     private FirebaseAuth mAuth;
     List<FirebaseData> fbDataList;
-    List<Integer> fbValueList;
+    List<Double> fbValueList;
     List<Integer> fbDateTimeList;
     static int fbLength;
     int currentYear, currentDay, currentMonth, currentHour, currentMinute;
@@ -225,7 +224,7 @@ public class ShowData_day extends AppCompatActivity{
                     Calendar fbCal = new GregorianCalendar();
                     fbCal.set(year, month-1, day);
                     if ((daysBetween(cal.getTime(), fbCal.getTime())==0) || (daysBetween(cal.getTime(),fbCal.getTime())==1 && currentHour<hour) || (daysBetween(cal.getTime(),fbCal.getTime())==1 && currentHour==hour && currentMinute<minute)){
-                        Integer fbValue = Integer.parseInt(data.getValue(FirebaseData.class).getLevel());
+                        Double fbValue = Double.parseDouble(data.getValue(FirebaseData.class).getLevel());
                         fbValueList.add(fbValue);
                         //Long fbDateTime = Long.parseLong(data.getValue(FirebaseData.class).getDate_time());
                         String tempTime = data.getValue(FirebaseData.class).getDate_time();
@@ -242,14 +241,13 @@ public class ShowData_day extends AppCompatActivity{
                 double avgValue = 0;
                 for (int i = 0; i < fbLength; i++){
                     arrayList.add(new childDataPoint(fbDateTimeList.get(i), fbValueList.get(i)));
-                    avgValue += (fbValueList.get(i)/fbLength);
+                    avgValue += (fbValueList.get(i)/(double)fbLength);
                 }
 
                 String stringValue = String.format("%.2f",avgValue);
                 showAvgValue(stringValue);
                 showTimePeriod();
 
-                // TODO: display real time and not scalable time
                 GraphView graph = (GraphView) findViewById(R.id.graph);
                 BarGraphSeries<childDataPoint> series = new BarGraphSeries<>();
                 for (int i = 0; i < fbLength; i++) {

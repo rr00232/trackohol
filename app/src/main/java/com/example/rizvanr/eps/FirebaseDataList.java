@@ -43,9 +43,6 @@ public class FirebaseDataList extends ArrayAdapter {
 
         textViewValue.setText(" "+fbData1.getLevel()+" mg/L");
 
-        //retValue.add(Integer.parseInt(fbData1.getLevel()));
-        //retDateTime.add(Long.parseLong(fbData1.getDate_time()));
-
         return listViewItem;
     }
 
