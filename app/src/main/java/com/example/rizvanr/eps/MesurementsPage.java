@@ -92,19 +92,17 @@ public class MesurementsPage extends Activity {
                 .setIndex(backIndex)
                 .setDuration(1500)
                 .build());
-        float measuredAlcoholLevelMgL = getIntent().getIntExtra("ALCOHOL_LEVEL_KEY", 0);
-        Toast.makeText(MesurementsPage.this, "LEVEL: " + String.valueOf(measuredAlcoholLevelMgL), Toast.LENGTH_SHORT).show();
+        float measuredAlcoholLevelMgL = getIntent().getFloatExtra("ALCOHOL_LEVEL_KEY", 0);
 
-        float measuredAlcoholLevel = measuredAlcoholLevelMgL  / 2;
+        long measuredAlcoholLevel = Math.round((measuredAlcoholLevelMgL/0.75)*100);
         Log.d("DISPLAY", "DATA RECEIVED: " + Float.toString(measuredAlcoholLevelMgL));
-        Toast.makeText(MesurementsPage.this, "LEVEL PERCENT: " + String.valueOf(measuredAlcoholLevel), Toast.LENGTH_SHORT).show();
 
         dataseriesItem.addArcSeriesItemListener(new SeriesItem.SeriesItemListener() {
             @Override
             public void onSeriesItemAnimationProgress(float percentComplete, float currentPosition) {
                 float percentFilled = ((currentPosition - dataseriesItem.getMinValue()) / (dataseriesItem.getMaxValue() - dataseriesItem.getMinValue()));
 
-                textPercentage.setText(String.format("%d mg/L", measuredAlcoholLevelMgL));
+                textPercentage.setText(String.format("%.2f mg/L", measuredAlcoholLevelMgL));
             }
 
             @Override

@@ -41,12 +41,21 @@ public class MeasuringPage extends AppCompatActivity {
         //Defining a Callback which triggers whenever data is read.
         @Override
         public void onReceivedData(byte[] arg0) {
-            String data = null;
             try {
-                data = new String(arg0, "UTF-8");
+                String data = new String(arg0, "UTF-8");
+                int byte_len =  arg0.length;
+                Log.d("SERIAL", "DATA RECEIVED BYTES: " + arg0);
+                Log.d("SERIAL", "DATA RECEIVED BYTES LENGTH: " + Integer.toString(byte_len));
                 Log.d("SERIAL", "DATA RECEIVED: " + data);
-                if (data != null && !data.isEmpty()){
-                    returnToMesurements(data);
+                if (data != null && !data.isEmpty() && byte_len == 4){
+//                    int asInt = (arg0[0] & 0xFF)
+//                            | ((arg0[1] & 0xFF) << 8)
+//                            | ((arg0[2] & 0xFF) << 16)
+//                            | ((arg0[3] & 0xFF) << 24);
+                    float asFloat = Float.parseFloat(data);
+                    if (asFloat < 1){
+                        returnToMesurements(asFloat);
+                    }
                 }
                     // appended to the TextView
             } catch (UnsupportedEncodingException e) {
@@ -199,7 +208,7 @@ public class MeasuringPage extends AppCompatActivity {
             public void onClick(View v) {
                 returnToMainPage();
             }
-        });
+            });
     }
 
     @Override
@@ -207,7 +216,7 @@ public class MeasuringPage extends AppCompatActivity {
         super.applyOverrideConfiguration(overrideConfiguration);
     }
 
-    public void returnToMesurements(String data){
+    public void returnToMesurements(Float data){
         //PACK THEM IN AN INTENT OBJECT
         if (serialPort != null && serialPort.isOpen() ) {
             serialPort.close();
@@ -219,7 +228,7 @@ public class MeasuringPage extends AppCompatActivity {
         }
 
         Intent intent = new Intent(this, MesurementsPage.class);
-        intent.putExtra("ALCOHOL_LEVEL_KEY", Float.valueOf(data));
+        intent.putExtra("ALCOHOL_LEVEL_KEY", data);
         finish();
         startActivity(intent);
 
