@@ -16,6 +16,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    buildToolsVersion '28.0.3'
 }
 
 dependencies {
@@ -34,5 +39,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:16.0.1'
     implementation 'com.google.firebase:firebase-auth:16.0.1'
     implementation 'com.jjoe64:graphview:4.2.2'
+    implementation 'com.github.felHR85:UsbSerial:5.0.0'
 }
 apply plugin: 'com.google.gms.google-services'

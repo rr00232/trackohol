@@ -39,10 +39,21 @@
         </activity>
         <activity
             android:name=".MeasuringPage"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+            </intent-filter>
+            <!--IntentFilter will be triggered when any new device is attached. The kind of device
+                can be explicitly specified by providing the vendor ID and/or product ID in an XML file
+                device_filter.-->
+            <meta-data
+                android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+                android:resource="@xml/device_filter" />
+        </activity>
         <activity android:name=".MesurementsPage" />
 
 
     </application>
-
+    <uses-permission
+        android:name="android.permission.VIBRATE"></uses-permission>
 </manifest>
